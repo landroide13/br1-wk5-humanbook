@@ -2,12 +2,15 @@ class User < ApplicationRecord
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
 
+  has_many :sent_messages, foreign_key: "sender_id",class_name: "Message"
+  has_many :received_messages, foreign_key: "recipient_id"  ,class_name: "Message"
+
   # me ==> friendships
   # friendship ==> friend
   # friendships ==> friends
 
   validates :name, :email, presence: true
-  has_secure_password
+
 
   def self.from_omniauth(auth)
     # Check out the Auth Hash function at https://github.com/mkdynamic/omniauth-facebook#auth-hash
